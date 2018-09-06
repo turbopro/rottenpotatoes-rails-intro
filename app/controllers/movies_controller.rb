@@ -21,8 +21,6 @@ class MoviesController < ApplicationController
     # store selected ratings in session; display selected list of movies
     session[:sel_ratings] = params[:ratings].keys if params[:ratings]
     @movies = Movie.movie_list(session[:sel_ratings], params[:sort])
-
-    #debugger
   end
 
   def new
