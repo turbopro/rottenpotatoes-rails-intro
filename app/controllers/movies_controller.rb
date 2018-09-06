@@ -11,16 +11,23 @@ class MoviesController < ApplicationController
   end
 
   def index
-    #@movies = Movie.all
-    #@movies = Movie.order(params[:sort])
-
+    # get list of all ratings
     @all_ratings = Movie.ratings
+
+    # set header css attributes
     @title_header = 'hilite' if params[:sort] == 'title'
     @release_date_header = 'hilite' if params[:sort] == 'release_date'
 
-    # store selected ratings in session; display selected list of movies
+    # first request: params[:ratings] and params[:sort] are nil
+    # store @all_ratings in session[:sel_ratings]
+    if params[:ratings].nil? && params[:sort].nil?
+      session[:sel_ratings] = @all_ratings
+    end
+    # if params[:ratings], store in session[:sel_ratings]
     session[:sel_ratings] = params[:ratings].keys if params[:ratings]
+
     @movies = Movie.movie_list(session[:sel_ratings], params[:sort])
+    #debugger
   end
 
   def new
