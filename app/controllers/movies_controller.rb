@@ -24,7 +24,8 @@ class MoviesController < ApplicationController
 
     # set session parameters for initial page opening
     if session[:sel_ratings].nil? && session[:sel_sort].nil?
-      session[:sel_ratings] = @all_ratings
+      #session[:sel_ratings] = @all_ratings
+      redirect_to movies_path(session[:sel_ratings] = @all_ratings)
     end
 
     # @checkbox_set used to display checkboxes set in view
