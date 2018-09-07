@@ -4,8 +4,8 @@
   Include:
   - @all_ratings.each do |rating|
     = rating
-    -# use session[:sel_ratings] to display checkbox set/unset
-    = check_box_tag("ratings[#{rating}]", 1, session[:sel_ratings].include?(rating))
+    -# @checkbox_set includes selected ratings
+    = check_box_tag("ratings[#{rating}]", 1, @checkbox_set.include?(rating))
   = submit_tag 'Refresh', :id => "ratings_submit"
 
 %table#movies

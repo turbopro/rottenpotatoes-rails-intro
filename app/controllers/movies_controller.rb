@@ -27,6 +27,9 @@ class MoviesController < ApplicationController
       session[:sel_ratings] = @all_ratings
     end
 
+    # @checkbox_set used to display checkboxes set in view
+    @checkbox_set = session[:sel_ratings]
+
     # get movies
     @movies = Movie.movie_list(session[:sel_ratings], session[:sel_sort])
     #debugger
