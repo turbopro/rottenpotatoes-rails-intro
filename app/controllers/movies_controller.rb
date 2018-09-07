@@ -14,26 +14,21 @@ class MoviesController < ApplicationController
     # get list of all ratings
     @all_ratings = Movie.ratings
 
-    # set header css attributes
-    @title_header = 'hilite' if params[:sort] == 'title'
-    @release_date_header = 'hilite' if params[:sort] == 'release_date'
-
-    # first request: params[:ratings] and params[:sort] are nil
-    # store @all_ratings in session[:sel_ratings]
-    if params[:ratings].nil? && params[:sort].nil? && session[:sel_ratings].nil? && session[:sel_sort].nil?
-    #if params[:ratings].nil? && params[:sort].nil?
-      session[:sel_ratings] = @all_ratings
-    end
-    # if params[:ratings], store in session[:sel_ratings]
+    # set session variables
     session[:sel_ratings] = params[:ratings].keys if params[:ratings]
     session[:sel_sort]    = params[:sort] if params[:sort]
 
-    #@movies = Movie.movie_list(session[:sel_ratings], session[:sel_sort])
-    if session[:sel_sort].nil?
-      @movies = Movie.movie_list(session[:sel_ratings], params[:sort])
-    else
-      @movies = Movie.movie_list(session[:sel_ratings], session[:sel_sort])
+    # set header css attributes
+    @title_header = 'hilite' if session[:sel_sort] == 'title'
+    @release_date_header = 'hilite' if session[:sel_sort] == 'release_date'
+
+    # set session parameters for initial page opening
+    if session[:sel_ratings].nil? && session[:sel_sort].nil?
+      session[:sel_ratings] = @all_ratings
     end
+
+    # get movies
+    @movies = Movie.movie_list(session[:sel_ratings], session[:sel_sort])
     #debugger
   end
 
