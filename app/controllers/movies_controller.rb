@@ -11,38 +11,26 @@ class MoviesController < ApplicationController
   end
 
   def index
-    #debugger
     # get list of all ratings
     @all_ratings = Movie.ratings
 
     # set session variables
-    if params[:sort]
-      redirect_to movies_path(session[:sel_sort] = params[:sort])
-    end
-    if params[:ratings]
-      redirect_to movies_path(session[:sel_ratings] = params[:ratings].keys)
-    end
-    #session[:sel_ratings] = params[:ratings].keys if params[:ratings]
-    #session[:sel_sort]    = params[:sort] if params[:sort]
+    redirect_to movies_path(session[:sel_sort] = params[:sort]) if params[:sort]
+    redirect_to movies_path(session[:sel_ratings] = params[:ratings].keys) if params[:ratings]
 
     # set header css attributes
     @title_header = 'hilite' if session[:sel_sort] == 'title'
     @release_date_header = 'hilite' if session[:sel_sort] == 'release_date'
 
-    # set session parameters for initial page opening
+    # set session parameters and checkboxes for initial page opening
     if session[:sel_ratings].nil? && session[:sel_sort].nil?
       @checkbox_set = session[:sel_ratings] = @all_ratings
-      #@checkbox_set = @all_ratings
     else
       @checkbox_set = session[:sel_ratings]
     end
 
-    # @checkbox_set used to display checkboxes set in view
-    #@checkbox_set = session[:sel_ratings]
-
     # get movies
     @movies = Movie.movie_list(session[:sel_ratings], session[:sel_sort])
-    #debugger
   end
 
   def new
