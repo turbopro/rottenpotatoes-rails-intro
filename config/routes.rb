@@ -14,7 +14,16 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
-  resources :movies
+  ## add 'sorting' route to 'movies'
+  #resources :movies
+  resources :movies do
+    collection do
+      get 'sorting'
+    end
+  end
+  #resources :movies do
+  #  get 'sorting'
+  #end
   
   # Example resource route with options:
   #   resources :products do

@@ -4,32 +4,50 @@ class MoviesController < ApplicationController
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
 
+  # set sorted column headers
+  def header_hilite
+    @title_header = 'hilite' if session[:sel_sort] == 'title'
+    @release_date_header = 'hilite' if session[:sel_sort] == 'release_date'
+  end
+
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
 
+  # RESTful sort columns action
+  def sorting
+    @all_ratings = session[:all_ratings]
+
+    session[:sel_sort] = params[:sort] if params[:sort]
+    session[:sel_ratings] = params[:ratings].keys if params[:ratings]
+
+    header_hilite
+
+    @checkbox_set = session[:sel_ratings]
+
+    @movies = Movie.movie_list(session[:sel_ratings], session[:sel_sort])
+    render 'index'
+  end
+
   def index
-    # get list of all ratings
     @all_ratings = Movie.ratings
 
-    # set session variables
-    redirect_to movies_path(session[:sel_sort] = params[:sort]) if params[:sort]
-    redirect_to movies_path(session[:sel_ratings] = params[:ratings].keys) if params[:ratings]
-
-    # set header css attributes
-    @title_header = 'hilite' if session[:sel_sort] == 'title'
-    @release_date_header = 'hilite' if session[:sel_sort] == 'release_date'
-
-    # set session parameters and checkboxes for initial page opening
-    if session[:sel_ratings].nil? && session[:sel_sort].nil?
-      @checkbox_set = session[:sel_ratings] = @all_ratings
-    else
-      @checkbox_set = session[:sel_ratings]
+    # if sort or ratings set, redirect to 'sorting' action with params
+    if (params[:sort] || params[:ratings])
+      session[:all_ratings] = @all_ratings
+      redirect_to sorting_movies_path(params)
     end
 
-    # get movies
+    # set checkboxes and column headers if session values set
+    if session[:sel_sort] || session[:sel_ratings]
+      @checkbox_set = session[:sel_ratings]
+      header_hilite
+    else
+      @checkbox_set = session[:sel_ratings] = @all_ratings
+    end
+
     @movies = Movie.movie_list(session[:sel_ratings], session[:sel_sort])
   end
 
