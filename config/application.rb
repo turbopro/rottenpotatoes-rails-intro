@@ -24,8 +24,8 @@ module Rottenpotatoes
     config.active_record.raise_in_transactional_callbacks = true
 
     # set logfiles -- Sep 12 2018, xon-xoff
-    size = 100*1024
-    num_logs = 5
-    config.logger = Logger.new(config.paths['log'].first, num_logs, size)
+    #size = 100*1024
+    #num_logs = 5
+    #config.logger = Logger.new(config.paths['log'].first, num_logs, size)
   end
 end
