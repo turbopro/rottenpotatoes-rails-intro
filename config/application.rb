@@ -23,6 +23,8 @@ module Rottenpotatoes
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.web_console.development_only = false
+
     # set logfiles -- Sep 12 2018, xon-xoff
     #size = 100*1024
     #num_logs = 5

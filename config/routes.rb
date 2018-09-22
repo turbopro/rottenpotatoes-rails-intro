@@ -21,6 +21,10 @@ Rails.application.routes.draw do
       get 'sorting'
     end
   end
+
+  # Route that posts 'Search TMDB' form
+  post '/movies/search_tmdb'
+
   #resources :movies do
   #  get 'sorting'
   #end

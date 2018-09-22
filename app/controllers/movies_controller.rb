@@ -10,6 +10,13 @@ class MoviesController < ApplicationController
     @release_date_header = 'hilite' if session[:sel_sort] == 'release_date'
   end
 
+  # action for Search TMDB
+  def search_tmdb
+    # hardwire to simulate failre
+    flash[:warning] = "'#{params[:search_terms]}' was not found in TMDB."
+    redirect_to movies_path
+  end
+
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
